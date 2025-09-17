@@ -1,42 +1,37 @@
-name: YouTube Clip Generator
+name: Generar Clips desde YouTube
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
-  generate-clip:
+  build:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    
-    - name: Set up Python
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    - name: Instalar FFmpeg
+      run: sudo apt-get install -y ffmpeg
+
+    - name: Configurar Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
-    
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ffmpeg
-    
-    - name: Install Python dependencies
-      run: |
-        pip install -r requirements.txt
-    
-    - name: Create clips directory
+        python-version: '3.10'
+
+    - name: Instalar dependencias
+      run: pip install -r requirements.txt
+
+    - name: Crear carpetas necesarias
       run: |
         mkdir -p clips downloads
-    
-    - name: Generate clips
-      run: |
-        python src/clip_generator.py
-    
-    - name: Upload generated clips
-      uses: actions/upload-artifact@v3
+
+    - name: Generar clips
+      run: python src/clip_generator.py
+
+    - name: Subir clips generados
+      uses: actions/upload-artifact@v4
       with:
-        name: youtube-clips
+        name: clips-generados
         path: clips/
