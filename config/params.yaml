@@ -1,0 +1,9 @@
+youtube_url: "https://www.youtube.com/watch?v=TU_ID_DE_VIDEO"  # <-- Reemplaza con tu link
+
+clips:
+  - start_time: "00:01:30"  # Formato: HH:MM:SS
+    end_time: "00:02:00"
+    output_name: "clip1.mp4"
+  - start_time: "00:05:15"
+    end_time: "00:06:45"
+    output_name: "clip2.mp4"
