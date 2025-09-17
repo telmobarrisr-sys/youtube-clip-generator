@@ -1,5 +1,5 @@
 import yaml
-from pytube import YouTube
+import yt_dlp
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 import os
 import re
@@ -24,11 +24,18 @@ def convert_time_to_seconds(time_str):
 def download_video(url, output_path="downloads/"):
     os.makedirs(output_path, exist_ok=True)
     try:
-        yt = YouTube(url)
-        stream = yt.streams.get_highest_resolution()
-        filename = stream.download(output_path)
-        print(f"Video descargado: {filename}")
-        return filename
+        ydl_opts = {
+            'outtmpl': os.path.join(output_path, '%(title)s.%(ext)s'),
+            'format': 'best[height<=720]',  # 720p máximo para más rapidez
+            'quiet': False,
+        }
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=True)
+            filename = ydl.prepare_filename(info)
+            print(f"Video descargado: {filename}")
+            return filename
+            
     except Exception as e:
         print(f"Error descargando video: {e}")
         raise
