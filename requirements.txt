@@ -1,3 +1,5 @@
+youtube-dl
 moviepy
-yt-dlp
-PyYAML
+pytube
+requests
+pillow
