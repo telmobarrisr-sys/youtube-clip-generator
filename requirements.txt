@@ -1,5 +1,4 @@
-youtube-dl
-moviepy
 pytube
+moviepy
+pyyaml
 requests
-pillow
